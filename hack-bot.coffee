@@ -22,18 +22,19 @@ logger = ( d ) ->
 room_id = 401915
 #everyone
 #room_id = 265458
-user_id = 600703
 
 
 instance.room room_id, ( room ) ->
   room.join ->
 
+    console.log( room )
+
     room.speak "hai guys", logger
 
     room.listen ( msg ) ->
 
-      #if msg.user_id is user_id
-        #return
+      #if msg.user_id == user_id
+        #return false
 
       if /deal/.test( msg.body )
         room.speak "DEAL WITH IT", logger
@@ -52,11 +53,17 @@ instance.room room_id, ( room ) ->
         room.speak "http://s3.amazonaws.com/gif.ly/gifs/485/original.gif?1294425077", logger
         room.speak "well, that's just like your opinion, man."
 
-      #if /no u/i
-        #console.log(msg)
+      #if /no u/i.test( msg.body )
+        #room.speak 'NO U', logger
+
+      if /^\?about/.test( msg.body )
+        room.speak 'quack bot was born on may 26, 2011. he lives here: https://github.com/wookiehangover/quack-bot'
 
       #if /wu|at/i.test( msg.body )
         #room.speak 'yr not david mark', logger
+
+      if /^\?bot.snack/.test( msg.body )
+        room.speak 'nom nom nom', logger
 
       if /advice/i.test( msg.body )
         room.speak 'talk to Paul on quora http://www.quora.com/Dating-Relationships-on-Quora', logger

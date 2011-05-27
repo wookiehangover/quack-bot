@@ -1,4 +1,4 @@
-var Campfire, Google, Sandbox, google, instance, logger, room_id, sandbox, sys, token, user_id, _;
+var Campfire, Google, Sandbox, google, instance, logger, room_id, sandbox, sys, token, _;
 sys = require('sys');
 _ = require('underscore')._;
 Campfire = require('./node-campfire/lib/campfire').Campfire;
@@ -16,9 +16,9 @@ logger = function(d) {
   return console.log(d);
 };
 room_id = 401915;
-user_id = 600703;
 instance.room(room_id, function(room) {
   return room.join(function() {
+    console.log(room);
     room.speak("hai guys", logger);
     return room.listen(function(msg) {
       var g_exp, mdc_exp, yt_exp;
@@ -38,6 +38,12 @@ instance.room(room_id, function(room) {
       if (/IMO/i.test(msg.body)) {
         room.speak("http://s3.amazonaws.com/gif.ly/gifs/485/original.gif?1294425077", logger);
         room.speak("well, that's just like your opinion, man.");
+      }
+      if (/^\?about/.test(msg.body)) {
+        room.speak('quack bot was born on may 26, 2011. he lives here: https://github.com/wookiehangover/quack-bot');
+      }
+      if (/^\?bot.snack/.test(msg.body)) {
+        room.speak('nom nom nom', logger);
       }
       if (/advice/i.test(msg.body)) {
         room.speak('talk to Paul on quora http://www.quora.com/Dating-Relationships-on-Quora', logger);
