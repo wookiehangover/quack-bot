@@ -1,0 +1,3 @@
+[submodule "node-campfire"]
+	path = node-campfire
+	url = https://github.com/tristandunn/node-campfire.git
