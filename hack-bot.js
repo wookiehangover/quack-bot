@@ -78,7 +78,7 @@ instance.room(room_id, function(room) {
       if (yt_exp.test(msg.body)) {
         google.search(msg.body.match(yt_exp)[1] + ' site:youtube.com', function(results) {
           if (results.length) {
-            return room.speak("" + results[0].titleNoFormatting + " - " + results[0].unescapedUrl, logger);
+            return room.speak("" + results[0].unescapedUrl, logger);
           } else {
             return room.speak("Sorry, no results for", logger);
           }

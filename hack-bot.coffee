@@ -96,7 +96,7 @@ instance.room room_id, ( room ) ->
       if yt_exp.test( msg.body )
        google.search msg.body.match(yt_exp)[1] + ' site:youtube.com', ( results ) ->
         if results.length
-          room.speak "#{results[0].titleNoFormatting} - #{results[0].unescapedUrl}", logger
+          room.speak "#{results[0].unescapedUrl}", logger
         else
           room.speak "Sorry, no results for", logger
 
