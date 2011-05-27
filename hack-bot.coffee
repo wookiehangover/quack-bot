@@ -3,13 +3,14 @@ _         = require('underscore')._
 Campfire  = require('./node-campfire/lib/campfire').Campfire
 Sandbox   = require('sandbox')
 Google    = require('./google')
+token     = require('./token')
 
 sandbox = new Sandbox()
 google  = new Google()
 
 instance = new Campfire({
   ssl: true
-  token: '4924477aaed3b13ba3b086a5c0dd1d3eb1d6fb3d'
+  token: token
   account: 'quickleft'
 })
 
