@@ -1,0 +1,19 @@
+{
+  "author": "wookiehangover <sam@quickleft.com>",
+  "name": "quack-bot",
+  "description": "a campfire bot for quickleft",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/wookiehangover/quack-bot.git"
+  },
+  "engines": {
+    "node": "~v0.4.7"
+  },
+  "dependencies": {
+    "mongoose": "~1.3.6",
+    "underscore": "~1.1.6",
+    "sandbox": "~0.8.1"
+  },
+  "devDependencies": {}
+}
