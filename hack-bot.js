@@ -1,10 +1,9 @@
-var Campfire, Google, Note, Sandbox, google, instance, logger, quack, reminder, room_id, sandbox, sys, token, _;
-sys = require('sys');
+var Campfire, Google, Note, Sandbox, google, instance, logger, quack, reminder, room_id, sandbox, token, _;
 _ = require('underscore')._;
 token = require('./token');
 Campfire = require('./node-campfire/lib/campfire').Campfire;
 Sandbox = require('sandbox');
-Google = require('./google');
+Google = require('./lib/google');
 Note = require('./lib/models').note;
 sandbox = new Sandbox();
 google = new Google();

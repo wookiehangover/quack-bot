@@ -1,9 +1,8 @@
-sys       = require('sys')
 _         = require('underscore')._
 token     = require('./token')
 Campfire  = require('./node-campfire/lib/campfire').Campfire
 Sandbox   = require('sandbox')
-Google    = require('./google')
+Google    = require('./lib/google')
 Note      = require('./lib/models').note
 
 sandbox = new Sandbox()
