@@ -16,11 +16,13 @@ describe('Reminders', function() {
         user_id: 794174
       };
       return Reminder.save(msg, function(e) {
-        return Note.find({
-          name: "Test Dude"
+        return Note.findOne({
+          target_name: "Test Dude"
         }, function(err, doc) {
           expect(doc.target_name).toEqual("Test Dude");
+          expect(doc.msg).toEqual("whatever man");
           test_user.remove();
+          doc.remove();
           return jasmine.asyncSpecDone();
         });
       });

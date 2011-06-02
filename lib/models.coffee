@@ -3,7 +3,7 @@ mongoose  = require 'mongoose'
 _ = require('underscore')._
 
 # connect db adapter
-mongoose.connect('mongodb://localhost/quack-bot')
+mongoose.connect( process.env.MONGOHQ_URL )
 
 Schema    = mongoose.Schema
 ObjectId  = Schema.ObjectId

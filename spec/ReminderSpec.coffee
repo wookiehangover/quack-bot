@@ -10,22 +10,23 @@ test_user = new User
 
 
 describe 'Reminders', ->
-    it 'should save a message with full name', ->
+  it 'should save a message with full name', ->
 
-      test_user.save ( error, user ) ->
+    test_user.save ( error, user ) ->
 
-        msg =
-          body: "tell Test Dude whatever man"
-          user_id: 794174
+      msg =
+        body: "tell Test Dude whatever man"
+        user_id: 794174
 
-        Reminder.save msg, ( e ) ->
-          Note.find { name: "Test Dude" }, ( err, doc ) ->
+      Reminder.save msg, ( e ) ->
+        Note.findOne { target_name: "Test Dude" }, ( err, doc ) ->
 
-            expect( doc.target_name ).toEqual( "Test Dude" )
-            #expect( doc.target_id ).toEqual( "Test Dude" )
+          expect( doc.target_name ).toEqual( "Test Dude" )
+          expect( doc.msg ).toEqual( "whatever man" )
 
-            test_user.remove()
-            jasmine.asyncSpecDone()
+          test_user.remove()
+          doc.remove()
+          jasmine.asyncSpecDone()
 
-      jasmine.asyncSpecWait()
+    jasmine.asyncSpecWait()
 
