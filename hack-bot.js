@@ -1,9 +1,10 @@
-var Campfire, Google, Reminder, Sandbox, google, instance, logger, quack, room_id, sandbox, token;
+var Campfire, Google, Reminder, Sandbox, google, http, instance, logger, port, quack, room_id, sandbox, server, token;
 token = process.env.TOKEN;
 Sandbox = require('sandbox');
 Campfire = require('./lib/campfire').Campfire;
 Google = require('./lib/google');
 Reminder = require('./lib/reminder');
+http = require('http');
 sandbox = new Sandbox();
 google = new Google();
 instance = new Campfire({
@@ -99,3 +100,11 @@ quack = function(room) {
   });
 };
 instance.room(room_id, quack);
+server = http.createServer(function(req, res) {
+  res.writeHead(200, {
+    'Content-Type': 'text/plain'
+  });
+  return res.end('Hello World\n');
+});
+port = process.env.PORT || 3000;
+server.listen(port);
