@@ -23,8 +23,21 @@ note =
     type: Date
     default: Date.now
 
+user =
+  avatar_url:
+    type: String
+  user_id:
+    type: Number
+    unique: true
+  email:
+    type: String
+  name:
+    type: String
+
 mongoose.model 'note', new Schema( note )
+mongoose.model 'user', new Schema( user )
 
 module.exports =
-  note: mongoose.model('note')
+  note: mongoose.model 'note'
+  user: mongoose.model 'user'
 
