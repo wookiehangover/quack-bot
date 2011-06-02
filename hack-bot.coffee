@@ -1,4 +1,4 @@
-token     = require('./token')
+token     = process.env.TOKEN
 
 Sandbox   = require('sandbox')
 Campfire  = require('./lib/node-campfire/lib/campfire').Campfire

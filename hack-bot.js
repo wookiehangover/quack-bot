@@ -1,5 +1,5 @@
 var Campfire, Google, Reminder, Sandbox, google, instance, logger, quack, room_id, sandbox, token;
-token = require('./token');
+token = process.env.TOKEN;
 Sandbox = require('sandbox');
 Campfire = require('./lib/node-campfire/lib/campfire').Campfire;
 Google = require('./lib/google');
