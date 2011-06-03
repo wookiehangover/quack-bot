@@ -42,13 +42,18 @@ quack = ( room ) ->
 
         Reminder.poller( msg, room )
 
-        if  /^tell (\w+\s\w+|\@\w+)\s(.+)$/.test( msg.body )
+        if /^tell (\w+\s\w+|\@\w+)\s(.+)$/.test( msg.body )
           Reminder.save msg, ->
             room.speak "sure", logger
 
         Phrases.listen( msg, room )
 
         setter = /^([^=]+)\s\=\s(.+)$/
+
+        if /^destroy (.+)$/.test( msg.body )
+          match = /^destroy (.+)$/.exec(msg.body)[1]
+          Phrase.remove match, ->
+            room.speak "#{match} removed"
 
         if setter.test( msg.body )
           params = setter.exec( msg.body )

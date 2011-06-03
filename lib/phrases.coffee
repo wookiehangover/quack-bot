@@ -26,6 +26,12 @@ api =
       console.log("#{msg} saved")
       callback(doc) if _.isFunction( callback )
 
+  remove: ( match, callback ) ->
+    p = Phrase.find { regex: match }, ( err, doc ) ->
+      doc.remove ->
+        console.log("#{match} destroyed")
+        callback() if _.isFunction( callback )
+
   register: ( match, msg, callback ) ->
 
     phrases.push { regex: match, msg: msg ? false, callback: callback ? false }

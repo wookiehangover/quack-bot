@@ -30,7 +30,7 @@ quack = function(room) {
         room.speak("hai guys", logger);
       }
       return room.listen(function(msg) {
-        var g_exp, mdc_exp, params, setter, yt_exp;
+        var g_exp, match, mdc_exp, params, setter, yt_exp;
         if (msg.user_id === parseInt(bot_id)) {
           return;
         }
@@ -43,6 +43,12 @@ quack = function(room) {
         }
         Phrases.listen(msg, room);
         setter = /^([^=]+)\s\=\s(.+)$/;
+        if (/^destroy (.+)$/.test(msg.body)) {
+          match = /^destroy (.+)$/.exec(msg.body)[1];
+          Phrase.remove(match, function() {
+            return room.speak("" + match + " removed");
+          });
+        }
         if (setter.test(msg.body)) {
           params = setter.exec(msg.body);
           Phrases.store(params[1], params[2], function() {

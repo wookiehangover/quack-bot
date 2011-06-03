@@ -13,7 +13,7 @@ describe 'Phrases', ->
   it 'should match and speak static phrases', ->
     spyOn room, 'speak'
 
-    # phrases are currently hard coded, so let's test one that's in ther
+    # phrases are currently hard coded, so let's test o`ne that's in ther
     # TODO change once db support added
     Phrases.listen( { body: "wet" }, room )
 
