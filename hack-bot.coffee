@@ -28,7 +28,7 @@ quack = ( room ) ->
   room.join ->
 
     console.log "Joining #{room.name}"
-    room.speak "hai guys", logger
+    room.speak("hai guys", logger) unless process.env.SILENT
 
     room.listen ( msg ) ->
 
