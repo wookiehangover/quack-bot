@@ -17,7 +17,7 @@ instance = new Campfire({
 logger = function(d) {
   return console.log("" + d.message.created_at + ": " + d.message.body);
 };
-room_id = 401915;
+room_id = 265458;
 quack = function(room) {
   return User.findOne({
     name: "Quick Bot"

@@ -21,10 +21,10 @@ logger = ( d ) ->
   console.log "#{d.message.created_at}: #{d.message.body}"
 
 #bot-room
-room_id = 401915
+#room_id = 401915
 
 #everyone
-#room_id = 265458
+room_id = 265458
 
 quack = ( room ) ->
   User.findOne { name: "Quick Bot" }, ( err, doc ) ->
