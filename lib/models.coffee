@@ -1,9 +1,8 @@
 # Module Dependencies
 mongoose  = require 'mongoose'
-_ = require('underscore')._
-
+mongo_url = process.env.MONGOHQ_URL || 'mongodb://localhost/quack-bot'
 # connect db adapter
-mongoose.connect( process.env.MONGOHQ_URL )
+mongoose.connect( mongo_url )
 
 Schema    = mongoose.Schema
 ObjectId  = Schema.ObjectId
