@@ -1,6 +1,7 @@
-var Phrases, room, _;
+var Phrases, models, room, _;
 _ = require('underscore')._;
 Phrases = require('../lib/phrases');
+models = require('../lib/models');
 room = {
   speak: function(msg, logger) {
     if (_.isFunction(logger)) {
@@ -48,7 +49,7 @@ describe('Phrases', function() {
     }, room);
     return expect(room.speak).toHaveBeenCalled();
   });
-  return it('should call your registerd callbacks', function() {
+  it('should call your registerd callbacks', function() {
     var holla;
     holla = {
       back: function() {}
@@ -60,5 +61,17 @@ describe('Phrases', function() {
       body: 'holla'
     }, room);
     return expect(holla.back).toHaveBeenCalled();
+  });
+  return it('should store phrases persistently', function() {
+    Phrases.store(/testing/, 'this is just a test', function() {
+      return models.phrase.findOne({
+        msg: 'this is just a test'
+      }, function(err, doc) {
+        expect(doc.msg).toEqual('this is just a test');
+        doc.remove();
+        return jasmine.asyncSpecDone();
+      });
+    });
+    return jasmine.asyncSpecWait();
   });
 });

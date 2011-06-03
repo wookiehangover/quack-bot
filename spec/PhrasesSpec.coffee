@@ -1,5 +1,6 @@
 _       = require('underscore')._
 Phrases = require('../lib/phrases')
+models  = require('../lib/models')
 
 # mocking the campfire room api
 room =
@@ -56,6 +57,19 @@ describe 'Phrases', ->
     Phrases.register( /holla/, 'back', holla.back )
     Phrases.listen( { body: 'holla' }, room )
     expect( holla.back ).toHaveBeenCalled()
+
+  it 'should store phrases persistently', ->
+    Phrases.store /testing/, 'this is just a test', ->
+
+      models.phrase.findOne { msg: 'this is just a test' }, ( err, doc ) ->
+
+        expect( doc.msg ).toEqual( 'this is just a test' )
+
+        doc.remove()
+        jasmine.asyncSpecDone()
+
+    jasmine.asyncSpecWait()
+
 
 
 
