@@ -104,7 +104,7 @@ server = http.createServer(function(req, res) {
   res.writeHead(200, {
     'Content-Type': 'text/plain'
   });
-  return res.end('Hello World\n');
+  return res.end('quack bot <3s you\n');
 });
 port = process.env.PORT || 3000;
 server.listen(port);

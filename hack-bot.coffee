@@ -115,8 +115,8 @@ quack = ( room ) ->
 instance.room room_id, quack
 
 server = http.createServer ( req, res ) ->
-  res.writeHead(200, {'Content-Type': 'text/plain'})
-  res.end('Hello World\n')
+  res.writeHead 200, { 'Content-Type': 'text/plain' }
+  res.end 'quack bot <3s you\n'
 
 port = process.env.PORT || 3000
 
