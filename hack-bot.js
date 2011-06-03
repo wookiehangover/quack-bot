@@ -1,9 +1,10 @@
-var Campfire, Google, Reminder, Sandbox, google, http, instance, logger, port, quack, room_id, sandbox, server, token;
+var Campfire, Google, Phrases, Reminder, Sandbox, google, http, instance, logger, port, quack, room_id, sandbox, server, token;
 token = process.env.TOKEN;
 Sandbox = require('sandbox');
-Campfire = require('./lib/campfire').Campfire;
-Google = require('./lib/google');
+Campfire = require('./lib/vendor/campfire').Campfire;
+Google = require('./lib/vendor/google');
 Reminder = require('./lib/reminder');
+Phrases = require('./lib/phrases');
 http = require('http');
 sandbox = new Sandbox();
 google = new Google();
@@ -17,9 +18,11 @@ logger = function(d) {
 };
 room_id = 265458;
 quack = function(room) {
-  return room.join(function() {
+  room.join(function() {
     console.log("Joining " + room.name);
-    room.speak("hai guys", logger);
+    if (!process.env.SILENT) {
+      room.speak("hai guys", logger);
+    }
     return room.listen(function(msg) {
       var g_exp, mdc_exp, yt_exp;
       Reminder.poller(msg, room);
@@ -28,38 +31,7 @@ quack = function(room) {
           return room.speak("sure", logger);
         });
       }
-      if (/deal/.test(msg.body)) {
-        room.speak("DEAL WITH IT", logger);
-        room.speak("http://s3.amazonaws.com/gif.ly/gifs/490/original.gif?1294726461", logger);
-      }
-      if (/WET/i.test(msg.body)) {
-        room.speak('write everything twice?', logger);
-      }
-      if (/noob/i.test(msg.body)) {
-        room.speak('http://www.marriedtothesea.com/022310/i-hate-thinking.gif', logger);
-      }
-      if (msg.body === 'quack') {
-        room.speak('quack!', logger);
-      }
-      if (/imo/i.test(msg.body)) {
-        room.speak("http://s3.amazonaws.com/gif.ly/gifs/485/original.gif?1294425077", logger);
-        room.speak("well, that's just like your opinion, man.");
-      }
-      if (/^\?about/.test(msg.body)) {
-        room.speak('quack bot was born on may 26, 2011. he lives here: https://github.com/wookiehangover/quack-bot');
-      }
-      if (/^\?bot.snack/.test(msg.body)) {
-        room.speak('nom nom nom', logger);
-      }
-      if (/advice/i.test(msg.body)) {
-        room.speak('talk to Paul on quora http://www.quora.com/Dating-Relationships-on-Quora', logger);
-      }
-      if (/^(hi|hello|hey|yo)\s/i.test(msg.body)) {
-        room.speak("oh hai", logger);
-      }
-      if (/^wookie/.test(msg.body)) {
-        room.speak('is prettymuch the best', logger);
-      }
+      Phrases.listen(msg, room);
       if (/^eval (.+)/.test(msg.body)) {
         sandbox.run(/^eval (.+)/.exec(msg.body)[1], function(output) {
           output = output.result.replace(/\n/g, ' ');
@@ -96,6 +68,12 @@ quack = function(room) {
           }
         });
       }
+    });
+  });
+  return process.on('SIGINT', function() {
+    return room.leave(function() {
+      console.log('\nGood Luck, Star Fox');
+      return process.exit();
     });
   });
 };
