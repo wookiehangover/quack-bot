@@ -25,7 +25,7 @@ describe('Phrases', function() {
     }, room);
     return expect(room.speak).not.toHaveBeenCalled();
   });
-  return it('should match complex (static) phrases', function() {
+  it('should match complex (static) phrases', function() {
     var lock;
     lock = 0;
     spyOn(room, 'speak').andCallFake(function(msg, logger) {
@@ -36,5 +36,29 @@ describe('Phrases', function() {
     }, room);
     expect(room.speak).toHaveBeenCalled();
     return expect(lock).toEqual(2);
+  });
+  it('should register new phrases', function() {
+    var len;
+    spyOn(room, 'speak');
+    len = Phrases.phrases.length;
+    Phrases.register(/test/, "test");
+    expect(len + 1).toEqual(Phrases.phrases.length);
+    Phrases.listen({
+      body: 'test'
+    }, room);
+    return expect(room.speak).toHaveBeenCalled();
+  });
+  return it('should call your registerd callbacks', function() {
+    var holla;
+    holla = {
+      back: function() {}
+    };
+    spyOn(holla, 'back');
+    spyOn(room, 'speak');
+    Phrases.register(/holla/, 'back', holla.back);
+    Phrases.listen({
+      body: 'holla'
+    }, room);
+    return expect(holla.back).toHaveBeenCalled();
   });
 });

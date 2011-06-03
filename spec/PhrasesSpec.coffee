@@ -36,5 +36,28 @@ describe 'Phrases', ->
     expect( room.speak ).toHaveBeenCalled()
     expect( lock ).toEqual( 2 )
 
+  it 'should register new phrases', ->
+    spyOn(room, 'speak')
+    len = Phrases.phrases.length
+
+    Phrases.register( /test/, "test" )
+    expect( len + 1 ).toEqual( Phrases.phrases.length )
+
+    Phrases.listen( { body: 'test' }, room )
+    expect( room.speak ).toHaveBeenCalled()
+
+  it 'should call your registerd callbacks', ->
+    holla =
+      back: -> return
+
+    spyOn( holla, 'back' )
+    spyOn( room, 'speak' )
+
+    Phrases.register( /holla/, 'back', holla.back )
+    Phrases.listen( { body: 'holla' }, room )
+    expect( holla.back ).toHaveBeenCalled()
+
+
+
 
 
