@@ -1,4 +1,4 @@
-var Campfire, Google, Phrases, Reminder, Sandbox, User, google, http, instance, logger, port, quack, room_id, sandbox, server, token;
+var Campfire, Google, Phrases, Reminder, Sandbox, User, bot_room, google, http, instance, logger, port, quack, room_id, sandbox, server, token;
 token = process.env.TOKEN;
 Sandbox = require('sandbox');
 Campfire = require('./lib/vendor/campfire').Campfire;
@@ -17,7 +17,8 @@ instance = new Campfire({
 logger = function(d) {
   return console.log("" + d.message.created_at + ": " + d.message.body);
 };
-room_id = 265458;
+bot_room = 401915;
+room_id = process.env.ROOM || bot_room;
 quack = function(room) {
   return User.findOne({
     name: "Quick Bot"
@@ -54,6 +55,9 @@ quack = function(room) {
           Phrases.store(params[1], params[2], function() {
             return room.speak("" + params[1] + " saved", logger);
           });
+        }
+        if (/^show me the money$/.test(msg.body)) {
+          Phrases.all(room);
         }
         if (/^eval (.+)/.test(msg.body)) {
           sandbox.run(/^eval (.+)/.exec(msg.body)[1], function(output) {

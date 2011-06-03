@@ -59,7 +59,7 @@ describe 'Phrases', ->
     expect( holla.back ).toHaveBeenCalled()
 
   it 'should store phrases persistently', ->
-    Phrases.store /testing/, 'this is just a test', ->
+    Phrases.store 'testing', 'this is just a test', ->
 
       models.phrase.findOne { msg: 'this is just a test' }, ( err, doc ) ->
 
@@ -69,6 +69,17 @@ describe 'Phrases', ->
         jasmine.asyncSpecDone()
 
     jasmine.asyncSpecWait()
+
+  it 'should remove phrases', ->
+   Phrases.store 'testing', 'this is just a test', ->
+
+      Phrases.remove 'testing', ->
+
+        models.phrase.find { regex: 'testing' }, ( err, doc ) ->
+          expect( doc ).toEqual( [] )
+          jasmine.asyncSpecDone()
+
+    jasmine.asyncSpecWait() 
 
 
 

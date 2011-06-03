@@ -62,14 +62,27 @@ describe('Phrases', function() {
     }, room);
     return expect(holla.back).toHaveBeenCalled();
   });
-  return it('should store phrases persistently', function() {
-    Phrases.store(/testing/, 'this is just a test', function() {
+  it('should store phrases persistently', function() {
+    Phrases.store('testing', 'this is just a test', function() {
       return models.phrase.findOne({
         msg: 'this is just a test'
       }, function(err, doc) {
         expect(doc.msg).toEqual('this is just a test');
         doc.remove();
         return jasmine.asyncSpecDone();
+      });
+    });
+    return jasmine.asyncSpecWait();
+  });
+  return it('should remove phrases', function() {
+    Phrases.store('testing', 'this is just a test', function() {
+      return Phrases.remove('testing', function() {
+        return models.phrase.find({
+          regex: 'testing'
+        }, function(err, doc) {
+          expect(doc).toEqual([]);
+          return jasmine.asyncSpecDone();
+        });
       });
     });
     return jasmine.asyncSpecWait();

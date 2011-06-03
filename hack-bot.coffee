@@ -21,10 +21,12 @@ logger = ( d ) ->
   console.log "#{d.message.created_at}: #{d.message.body}"
 
 #bot-room
-#room_id = 401915
+bot_room = 401915
 
 #everyone
-room_id = 265458
+#room_id = 265458
+
+room_id = process.env.ROOM || bot_room
 
 quack = ( room ) ->
   User.findOne { name: "Quick Bot" }, ( err, doc ) ->
@@ -59,6 +61,10 @@ quack = ( room ) ->
           params = setter.exec( msg.body )
           Phrases.store params[1], params[2], ->
             room.speak "#{params[1]} saved", logger
+
+
+        if /^show me the money$/.test( msg.body )
+          Phrases.all( room )
 
 
         if /^eval (.+)/.test( msg.body )

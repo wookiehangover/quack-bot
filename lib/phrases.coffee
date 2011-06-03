@@ -19,6 +19,15 @@ api =
     try
       console.log "#{d.message.created_at}: #{d.message.body}"
 
+  all: ( room ) ->
+    Phrase.find {}, ( err, doc ) ->
+      blob = "I know these things:\n\n"
+      _.each doc, ( p ) ->
+        blob += "#{p.regex}: #{p.msg}\n"
+
+      room.paste blob, api.logger
+
+
   store: ( match, msg, callback ) ->
     p = new Phrase({ regex: match, msg: msg })
 
@@ -27,7 +36,7 @@ api =
       callback(doc) if _.isFunction( callback )
 
   remove: ( match, callback ) ->
-    p = Phrase.find { regex: match }, ( err, doc ) ->
+    p = Phrase.findOne { regex: match }, ( err, doc ) ->
       doc.remove ->
         console.log("#{match} destroyed")
         callback() if _.isFunction( callback )
