@@ -46,7 +46,7 @@ quack = function(room) {
         setter = /^([^=]+)\s\=\s(.+)$/;
         if (/^destroy (.+)$/.test(msg.body)) {
           match = /^destroy (.+)$/.exec(msg.body)[1];
-          Phrase.remove(match, function() {
+          Phrases.remove(match, function() {
             return room.speak("" + match + " removed");
           });
         }

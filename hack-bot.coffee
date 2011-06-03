@@ -54,7 +54,7 @@ quack = ( room ) ->
 
         if /^destroy (.+)$/.test( msg.body )
           match = /^destroy (.+)$/.exec(msg.body)[1]
-          Phrase.remove match, ->
+          Phrases.remove match, ->
             room.speak "#{match} removed"
 
         if setter.test( msg.body )
@@ -62,10 +62,8 @@ quack = ( room ) ->
           Phrases.store params[1], params[2], ->
             room.speak "#{params[1]} saved", logger
 
-
         if /^show me the money$/.test( msg.body )
           Phrases.all( room )
-
 
         if /^eval (.+)/.test( msg.body )
           sandbox.run /^eval (.+)/.exec(msg.body)[1], ( output ) ->
