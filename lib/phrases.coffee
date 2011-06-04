@@ -27,7 +27,6 @@ api =
 
       room.paste blob, api.logger
 
-
   store: ( match, msg, callback ) ->
     p = new Phrase({ regex: match, msg: msg })
 
@@ -45,9 +44,28 @@ api =
 
     phrases.push { regex: match, msg: msg ? false, callback: callback ? false }
 
-  phrases: (-> phrases)()
+  phrases: phrases
 
   listen: ( message, room ) ->
+    # learn and destroy phrases
+    setter    = /^([^=]+)\s\=\s(.+)$/
+    destroyer = /^destroy (.+)$/
+
+    if setter.test( message.body )
+      params = setter.exec( message.body )
+      return api.store params[1], params[2], ->
+        room.speak "#{params[1]} saved", api.logger
+
+    if destroyer.test( message.body )
+      match = destroyer.exec( message.body)[1]
+      return api.remove match, ->
+        room.speak "#{match} removed", api.logger
+
+    # show all the memorized phrases
+    if /^show me the money$/.test( message.body )
+      return api.all( room )
+
+    # loop through the static phrases
     _.each api.phrases, ( phrase ) ->
       return if phrase.regex.test( message.body ) is false
 
@@ -59,6 +77,7 @@ api =
 
       phrase.callback() if _.isFunction( phrase.callback )
 
+    # and then the user entered phrases
     Phrase.find {}, ( err, doc ) ->
       _.each doc, ( phrase ) ->
         regex = new RegExp(phrase.regex)

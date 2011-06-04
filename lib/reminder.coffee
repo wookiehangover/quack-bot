@@ -40,14 +40,15 @@ api =
         catch error
           callback.call @, error if _.isFunction callback
 
-  poller: ( msg, room ) ->
+  listen: ( msg, room ) ->
+
+    if /^tell (\w+\s\w+|\@\w+)\s(.+)$/.test( msg.body )
+      return api.save msg, ->
+        room.speak "sure", logger
 
     Note.find {}, ( err, doc ) ->
-
       _.each doc, ( note ) ->
-
         if msg.user_id is parseInt(note.target_id, 10)
-
           room.speak "@#{note.target_name.split(' ')[0]}, #{note.sender_name.split(' ')[0]} says '#{note.msg}'", (d)->
             note.remove()
 

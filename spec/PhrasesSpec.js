@@ -11,7 +11,7 @@ room = {
     }
   }
 };
-describe('Phrases', function() {
+describe('Static Phrases', function() {
   it('should match and speak static phrases', function() {
     spyOn(room, 'speak');
     Phrases.listen({
@@ -19,7 +19,7 @@ describe('Phrases', function() {
     }, room);
     return expect(room.speak).toHaveBeenCalled();
   });
-  it('should not match non-(static) phrases', function() {
+  it('should not match non-phrases', function() {
     spyOn(room, 'speak');
     Phrases.listen({
       body: "ertyuiuytrertyui"
@@ -49,19 +49,20 @@ describe('Phrases', function() {
     }, room);
     return expect(room.speak).toHaveBeenCalled();
   });
-  it('should call your registerd callbacks', function() {
+  return it('should call your registerd callbacks', function() {
     var holla;
     holla = {
       back: function() {}
     };
     spyOn(holla, 'back');
-    spyOn(room, 'speak');
     Phrases.register(/holla/, 'back', holla.back);
     Phrases.listen({
       body: 'holla'
     }, room);
     return expect(holla.back).toHaveBeenCalled();
   });
+});
+describe('Persistant Phrases', function() {
   it('should store phrases persistently', function() {
     Phrases.store('testing', 'this is just a test', function() {
       return models.phrase.findOne({
@@ -74,7 +75,7 @@ describe('Phrases', function() {
     });
     return jasmine.asyncSpecWait();
   });
-  return it('should remove phrases', function() {
+  it('should remove phrases', function() {
     Phrases.store('testing', 'this is just a test', function() {
       return Phrases.remove('testing', function() {
         return models.phrase.find({
@@ -86,5 +87,19 @@ describe('Phrases', function() {
       });
     });
     return jasmine.asyncSpecWait();
+  });
+  it('should add phrases via the listener', function() {
+    spyOn(Phrases, 'store');
+    Phrases.listen({
+      body: 'testing1234 = testing stuff'
+    }, room);
+    return expect(Phrases.store).toHaveBeenCalled();
+  });
+  return it('should remove phrases via the listener', function() {
+    spyOn(Phrases, 'remove');
+    Phrases.listen({
+      body: 'destroy testing1234'
+    }, room);
+    return expect(Phrases.remove).toHaveBeenCalled();
   });
 });
