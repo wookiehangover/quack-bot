@@ -34,13 +34,9 @@ quack = ( room ) ->
         # eval JS in the sandbox
         if /^eval (.+)/.test( msg.body )
           sandbox.run /^eval (.+)/.exec(msg.body)[1], ( output ) ->
-            output = output.result.replace( /\n/g, ' ' )
-            room.speak output, logger
+            room.speak output.result.replace( /\n/g, ' ' ), logger
 
-
-        Reminder.listen( msg, room )
-        Phrases.listen( msg, room )
-        Search.listen( msg, room )
+        task.listen( msg, room ) for task in [Reminder, Phrases, Search]
 
     # leave the room on exit
     process.on 'SIGINT', ->

@@ -29,18 +29,22 @@ quack = function(room) {
         room.speak("hai guys", logger);
       }
       return room.listen(function(msg) {
+        var task, _i, _len, _ref, _results;
         if (msg.user_id === parseInt(bot_id)) {
           return;
         }
         if (/^eval (.+)/.test(msg.body)) {
           sandbox.run(/^eval (.+)/.exec(msg.body)[1], function(output) {
-            output = output.result.replace(/\n/g, ' ');
-            return room.speak(output, logger);
+            return room.speak(output.result.replace(/\n/g, ' '), logger);
           });
         }
-        Reminder.listen(msg, room);
-        Phrases.listen(msg, room);
-        return Search.listen(msg, room);
+        _ref = [Reminder, Phrases, Search];
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          task = _ref[_i];
+          _results.push(task.listen(msg, room));
+        }
+        return _results;
       });
     });
     return process.on('SIGINT', function() {
