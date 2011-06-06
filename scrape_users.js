@@ -1,12 +1,13 @@
 var _ = require('underscore')
-  , c = require('./lib/node-campfire/lib/campfire').Campfire
-  , i = new c({ ssl: true, token: "6b3a87666606cbd5d101bddfbca288de8d84ed17", account: 'quickleft' })
+  , c = require('./lib/vendor/campfire').Campfire
+  , i = new c({ ssl: true, token: process.env.TOKEN, account: 'quickleft' })
   , m = require('./lib/models');
 
 
-i.room(265458, function(r){ 
+i.room(265458, function(r){
   r.show(function(x){
     _.each(x.room.users, function(u){
+      console.log(u)
 
       m.user.findOne({ user_id: u.id }, function(err, doc){
       
@@ -16,7 +17,7 @@ i.room(265458, function(r){
         }
         var user = new m.user({ avatar_url: u.avatar_url, user_id: u.id, email: u.email, name: u.name });
 
-        //console.log(user);
+        console.log(user);
 
         user.save(function(s){
           console.log('saved',s);
@@ -26,7 +27,7 @@ i.room(265458, function(r){
 
     });
 
-    process.exit();
+    //process.exit();
   });
 });
 
