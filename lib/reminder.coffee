@@ -2,6 +2,10 @@ _         = require('underscore')._
 Note      = require('./models').note
 User      = require('./models').user
 
+logger = ( d ) ->
+  try
+    console.log "#{d.message.created_at}: #{d.message.body}"
+
 api =
   save: ( msg, callback ) ->
     reg = /^tell (\w+\s\w+|\@\w+)\s(.+)$/
