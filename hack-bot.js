@@ -56,6 +56,7 @@ quack = function(room) {
   });
 };
 instance.room(room_id, quack);
+instance.room('379185', quack);
 server = http.createServer(function(req, res) {
   res.writeHead(200, {
     'Content-Type': 'text/plain'
